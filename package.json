@@ -1,0 +1,35 @@
+{
+  "name": "koa-logger2",
+  "version": "0.0.1",
+  "description": "Another logging middleware for koa. Inspired by morgan from expressjs (apache-like style)",
+  "author": {
+    "name": "Tomasz Rojek",
+    "email": "me@tomrosystems.com",
+    "url": "http://tomrosystems.com/"
+  },
+  "keywords": [
+    "koa",
+    "logger",
+    "middleware",
+    "log"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/TomRoSystems/koa-logger2"
+  },
+  "engines": {
+    "node": ">= 0.11.9"
+  },
+  "bugs": {
+    "url": "https://github.com/TomRoSystems/koa-logger2/issues"
+  },
+  "homepage": "https://github.com/TomRoSystems/koa-logger2",
+  "main": "index.js",
+  "readme": "koa-logger2\n===========\n\nLogger middleware for [http://github.com/koajs](koajs). Inspired by morgan from expressjs and apache.\n\nUsage\n-----\n\nSimplest example that will print basic information to standard output:\n\n```javascript\nvar logger = require('koa-logger2');\napp.use(logger().gen); // will log to standard output by default\n```\n\nMore advanced usage which will output more [apache-like combined log](http://httpd.apache.org/docs/current/logs.html#accesslog):\n\n```javascript\nvar logger = require('koa-logger2');\n\nvar log_middleware = logger('ip [day/month/year:time zone] \"method url protocol/httpVer\" status size \"referer\" \"userAgent\" duration ms custom[unpacked]');\nlog_middleware.setStream(fs.createWriteStream(path.join(__dirname, 'logs/2014-09.log'), { flags: 'a' }));\n\napp.use(log_middleware.gen); // !! note there are no () after gen\n```\n\nAs a result you will get lines like:\n\n```\n123.45.67.89 [12/Sep/2014:22:12:26 +0200] \"GET / HTTP/1.1\" 301 22 \"-\" \"Mozilla/5.0 (Android; Mobile; rv:31.0) Gecko/31.0 Firefox/31.0\" 0 ms -\n```\n\nLater at any time you can call setStream again in order to replace stream you're writing to.\n\nAPI\n---\n\nJust call the only function which is being exported:\n\n### logger([ format = \" day/month time ip \"method url protocol/httpVer\" status size \"referer\" \"userAgent\" duration ms \" ])\n\nThis will create logger object which has two properties - setStream method and gen. Formatters currently implemented are:\n\n| Formatter | Description (Example)\n| --------- | ---------------------\n| ip        | IP address of the client\n| method    | Request method (GET)\n| url       | Request url (/)\n| status    | Status code (200)\n| httpVer   | Protocol version (1.1)\n| protocol  | HTTP or HTTPS\n| size      | Content-Length of response\n| referer   | Referer header\n| userAgent | User-agent header\n| time      | Current time in 24-hour format HH:MM:SS\n| day       | Day of month 01-31\n| month     | Short month name (Sep)\n| year      | Year 4 digits (2014)\n| zone      | Timezone offset (+0200)\n| duration  | Duration of processing this request\n| custom[your.field] | Basically access anything you want from koa (ctx) object\n\n#### setStream( [stream.Writable](http://nodejs.org/api/stream.html#stream_class_stream_writable) )\n\nUse this function to replace output stream for the logger (for example for log rotation). Please keep in mind that actual writing to the stream happens \"on the way back\".\n\n#### gen\n\nReturns generator function which should be used as middleware in your koaApp.\n** NOTE: There are NO brackets () at the end. **\n\n\nTODO\n----\n\n* support for auth-module\n* unit tests\n* better code documentation\n* ...\n\nLicense\n-------\n\nMIT\n",
+  "readmeFilename": "README.md",
+  "_id": "koa-logger2@0.0.1",
+  "_shasum": "658feef8cd7908cec841fe7515d8ebdce0d45420",
+  "_resolved": "koa-logger2.tar.gz",
+  "_from": "koa-logger2.tar.gz"
+}
