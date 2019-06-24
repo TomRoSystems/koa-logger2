@@ -10,7 +10,7 @@ exports = module.exports = function main(format) {
   var frmt = (format) || 'day/month time ip "method url protocol/httpVer" status size "referer" "userAgent" duration ms';
   var r = 'var outStream = process.stdout;\n'
 + 'return {\n'
-+ '  gen: function* (next) {' + compile(frmt) + '},\n'
++ '  gen: function* (next) {try {' + compile(frmt) + '} catch(e) {console.log(e.stack)}},\n'
 + '  setStream: function (s) { outStream = s; return this; }\n'
 + '}';
 
@@ -96,7 +96,7 @@ function compile(fmt) {
       return "( endAt.getTime() - startAt.getTime() )";
     }
     // custom one
-    ,"custom\\[(\\w+)\\]": function(m, p1, offset, str){
+    ,"custom\\[(\\w.+)\\]": function(m, p1, offset, str){
       return "(this." + p1 + " || '-')";
     }
   }
